@@ -1,0 +1,8 @@
+{
+  "name": "Budget Planner",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

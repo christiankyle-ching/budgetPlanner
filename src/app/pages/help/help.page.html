@@ -1,0 +1,119 @@
+<ion-header>
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title>Help & Feedback</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <ion-grid>
+    <!-- FAQ -->
+    <ion-row>
+      <ion-col>
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              <ion-text color="primary">FAQ </ion-text>
+              <small>(Frequently Asked Questions)</small>
+            </ion-card-title>
+          </ion-card-header>
+
+
+          <ion-card-content>
+
+            <ion-list>
+
+              <div *ngFor="let q of questions">
+
+                <ion-item button (click)="q.open = !q.open" detail="false" lines="none">
+
+                  <ion-label [class.ion-text-wrap]="q.open">
+                    {{ q.question }}
+                  </ion-label>
+
+                  <ion-icon *ngIf="!q.open" name="chevron-down-outline" slot="end"></ion-icon>
+                  <ion-icon *ngIf="q.open" name="chevron-up-outline" slot="end"></ion-icon>
+                </ion-item>
+
+                <div *ngIf="q.open" class="ion-padding answer" [innerHTML]="q.answer">
+
+                </div>
+
+              </div>
+
+
+            </ion-list>
+
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+
+
+    <!-- FEEDBACK -->
+    <ion-row>
+      <ion-col>
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              <ion-text color="primary">
+                Feedback / Suggestions
+              </ion-text>
+            </ion-card-title>
+          </ion-card-header>
+
+
+          <ion-card-content>
+
+            <div class="ion-padding-horizontal">
+              Whether it's a suggestion or an issue within the application,
+              always feel free to <strong>send me an email!</strong>
+            </div>
+
+            <ion-item>
+              <ion-label>Category</ion-label>
+              <ion-select placeholder="Select one..." #category [(ngModel)]="feedbackCategory"
+                (ionChange)="parseMail()">
+                <ion-select-option>Suggestion</ion-select-option>
+                <ion-select-option>New Feature Request</ion-select-option>
+                <ion-select-option>Issue</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Subject</ion-label>
+              <ion-input type="text" #subject [(ngModel)]="txtSubject" (ionChange)="parseMail()"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">More details...</ion-label>
+              <ion-textarea #description [(ngModel)]="txtDescription" (ionChange)="parseMail()"></ion-textarea>
+            </ion-item>
+
+            <div class="ion-text-right ion-padding">
+              <ion-button [href]="hrefMail"
+                [disabled]="(category.value == '' || description.value == '' || subject.value == '')">Send</ion-button>
+            </div>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

@@ -1,0 +1,51 @@
+.header {
+  background-image: url(..\..\..\assets\img\background.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #f4f5f8;
+
+
+  h3 {
+    padding: 0px;
+    margin: 0px;
+  }
+
+  small {
+    color: #d7d8da;
+  }
+
+  ion-grid {
+    height: 100%;
+  }
+
+  ion-grid > ion-row {
+    height: 100%;
+  }
+
+  //size-xs
+  @media (min-width: 0px) {
+    height: 140px;
+  }
+
+  //size-sm
+  @media (min-width: 576px) {
+    height: 160px;
+  }
+
+  //size-md
+  @media (min-width: 768px) {
+    height: 180px;
+  }
+}
+
+.header-grid {
+  height: 100%;
+}
+
+.active {
+  color: var(--ion-color-primary);
+}
+
+.active > ion-icon {
+  color: var(--ion-color-primary);
+}

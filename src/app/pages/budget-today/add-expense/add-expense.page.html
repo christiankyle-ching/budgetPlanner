@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add New Expense</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <!-- IS TEMPLATE?  -->
+  <ion-item>
+    <ion-label>Use Template?</ion-label>
+    <ion-toggle [(ngModel)]="useTemplate" (ionChange)="alertVisible = false"></ion-toggle>
+  </ion-item>
+
+  <!-- NOT USING TEMPLATE -->
+  <div *ngIf="!useTemplate">
+
+    <form (ngSubmit)="submitSingle()" [formGroup]="addExpenseForm">
+      <ion-list>
+  
+        <!-- NAME -->
+        <ion-item>
+          <ion-label position="floating">Reason of Spending</ion-label>
+          <ion-input type="text" formControlName="name" autocapitalize="words"></ion-input>
+        </ion-item>
+
+        <div *ngFor="let error of errorMessages.name">
+          <div *ngIf="(name.hasError(error.type)) && (name.dirty || name.touched)">
+            <ion-text color="danger" class="error ion-padding">{{ error.message }}</ion-text>
+          </div>
+        </div>
+  
+        <!-- AMOUNT -->
+        <ion-item>
+          <ion-label position="floating">Amount</ion-label>
+          <ion-input type="number" formControlName="amount"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.amount">
+
+          <div *ngIf="(amount.hasError(error.type)) && (amount.dirty || amount.touched)">
+            <ion-text color="danger" class="error ion-padding">{{ error.message }}</ion-text>
+          </div>
+        </div>
+  
+      </ion-list>
+  
+      <ion-button type="submit" expand="block" [disabled]="!addExpenseForm.valid">Add Expense</ion-button>    
+  
+    </form>
+  
+
+    
+  </div>
+
+  <!-- USING TEMPLATE -->
+  <div *ngIf="useTemplate">
+
+    <ion-item>
+      <ion-label>
+        <ion-text *ngIf="templates.length > 0">
+          Select a Template
+        </ion-text>
+
+        <ion-text *ngIf="templates.length <= 0" color="danger">No Templates Available.</ion-text>
+
+      </ion-label>
+
+      <ion-select [(ngModel)]="selectedTemplate" [disabled]="templates.length <= 0">
+        <ion-select-option *ngFor="let template of templates" [value]="template">{{ template.name }}</ion-select-option>
+      </ion-select>
+
+    </ion-item>
+
+    <ion-list>
+
+      <ion-item *ngFor="let ex of selectedTemplate?.expenses">
+
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="auto" class="ion-padding">
+              <ion-icon name="pricetag-outline"></ion-icon>
+            </ion-col>
+            <ion-col>{{ ex.name }}</ion-col>
+            <ion-col class="ion-text-right">{{ ex.amount }} PHP</ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </ion-item>
+
+    </ion-list>
+
+    <ion-button (click)="submitTemplate()" expand="block"
+    [disabled]="selectedTemplate == null">Add Expenses</ion-button>
+
+  </div>
+
+
+
+</ion-content>

@@ -1,0 +1,233 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>{{ item.date | date : 'MMMM dd, yyyy' }}</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-grid class="ion-no-padding">
+
+    <ion-row>
+      <!-- NOTES -->
+      <ion-col>
+
+        <ion-card>
+
+
+          <ion-card-content>
+
+            <ion-grid>
+              <ion-card-title>Notes</ion-card-title>
+            </ion-grid>
+
+
+            <ion-textarea placeholder="No notes for this day." enterkeyhint="done"
+            inputmode="text" [(ngModel)]="txtNote">
+            </ion-textarea>
+
+          </ion-card-content>
+
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+
+
+
+
+    <ion-row>
+      <!-- ALLOWANCE -->
+      <ion-col>
+
+        <ion-card>
+
+          <ion-card-header>
+            <ion-text color="success">Allowance</ion-text>
+          </ion-card-header>
+
+          <ion-card-content>
+
+            <div *ngIf="item.allowances">
+              <ion-list *ngIf="item.allowances.length > 0">
+
+                <ion-item *ngFor="let a of item.allowances">
+
+                  <ion-label>
+                    <!-- DETAILS -->
+                    <ion-text>{{ a.name }}</ion-text>
+
+                    <ion-text class="ion-float-right">{{ a.amount }} PHP</ion-text>
+                  </ion-label>
+
+                </ion-item>
+
+              </ion-list>
+
+              <ion-item *ngIf="item.allowances.length <= 0" lines="none">
+                <ion-label>
+                  No allowances listed for this day.
+                </ion-label>
+              </ion-item>
+            </div>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <!-- EXPENSES -->
+      <ion-col>
+
+        <ion-card>
+
+          <ion-card-header>
+            <ion-text color="danger">Expenses</ion-text>
+          </ion-card-header>
+
+          <ion-card-content>
+
+            <div *ngIf="item.expenses">
+              <ion-list *ngIf="item.expenses.length > 0">
+
+                <ion-item *ngFor="let ex of item.expenses">
+
+                  <ion-label>
+                    <!-- DETAILS -->
+                    <ion-text>{{ ex.name }}</ion-text>
+
+                    <ion-text class="ion-float-right">{{ ex.amount }} PHP</ion-text>
+                  </ion-label>
+
+                </ion-item>
+
+              </ion-list>
+
+              <ion-item *ngIf="item.expenses.length <= 0" lines="none">
+                <ion-label>
+                  No expenses listed for this day.
+                </ion-label>
+              </ion-item>
+            </div>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <!-- SUMMARY -->
+      <ion-col>
+
+        <ion-card>
+          <ion-card-header ion-padding>
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <ion-col>
+                  <ion-card-title>Summary</ion-card-title>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+          </ion-card-header>
+
+          <ion-card-content>
+
+            <!-- TOTAL ALLOWANCES -->
+            <ion-item>
+              <ion-grid>
+                <ion-row class="ion-align-items-center">
+
+                  <ion-col size="auto" class="ion-padding">
+                    <ion-icon name="wallet-outline"></ion-icon>
+                  </ion-col>
+
+                  <ion-col>Total Allowance:</ion-col>
+
+                  <ion-col class="ion-text-right">{{txtTotalAllowances}} PHP</ion-col>
+                </ion-row>
+
+              </ion-grid>
+            </ion-item>
+
+            <!-- TOTAL EXPENSES -->
+            <ion-item>
+              <ion-grid>
+                <ion-row class="ion-align-items-center">
+
+                  <ion-col size="auto" class="ion-padding">
+                    <ion-icon name="pricetags-outline"></ion-icon>
+                  </ion-col>
+
+                  <ion-col>Total Expenses:</ion-col>
+
+                  <ion-col class="ion-text-right">{{txtTotalExpenses}} PHP</ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+
+            <!-- TOTAL SAVINGS -->
+            <ion-item>
+              <ion-grid>
+                <ion-row class="ion-align-items-center">
+                  <ion-col size="auto" class="ion-padding">
+                    <ion-icon name="cash-outline"></ion-icon>
+                  </ion-col>
+
+                  <ion-col>Total Savings:</ion-col>
+
+                  <ion-col class="ion-text-right">
+
+
+                    <ion-text color="success" *ngIf="(txtTotalSavings > 0)">
+                      +{{txtTotalSavings}} PHP
+                    </ion-text>
+
+                    <ion-text color="danger" *ngIf="(txtTotalSavings <= 0)">
+                      {{txtTotalSavings}} PHP
+                    </ion-text>
+                  </ion-col>
+
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <!-- <ion-button (click)="refresh()">REFRESH</ion-button> -->
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+
+  <!-- <button (click)="refresh()">refresh</button>
+    <button (click)="log()">log</button> -->
+
+
+
+
+
+
+
+
+  <!-- <button (click)="refresh()">refresh</button>
+  <button (click)="log()">log</button> -->
+
+
+</ion-content>

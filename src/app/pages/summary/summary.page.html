@@ -1,0 +1,309 @@
+<ion-header>
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title>Summary</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- DATE PICKER -->
+  <ion-item>
+    <ion-label>
+      Select Date
+    </ion-label>
+    <ion-datetime [(ngModel)]="selectedDate" #datePicker done-text="Select" pickerFormat="MMMM YYYY"
+      displayFormat="MMMM, YYYY">
+    </ion-datetime>
+  </ion-item>
+
+  <!-- LOAD -->
+  <ion-button expand="block" [disabled]="!datePicker.value" (click)="load()" class="ion-padding">Generate Summary
+  </ion-button>
+
+
+
+  <div *ngIf="items.length != 0" class="ion-padding">
+
+    <div class="calendar-wrapper">
+
+
+      <h3 class="ion-text-center">
+        {{viewDate | date : 'MMMM, yyyy'}}
+      </h3>
+
+      <ion-grid class="calendar">
+
+        <!-- DAYLABELS -->
+        <ion-row class="ion-align-items-center">
+          <ion-col size="1" *ngFor="let d of daysLabel" class="ion-text-center">
+            <strong [class.calendar-weekend]="d == 'Sat' || d == 'Sun'">{{ d }}</strong>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+
+          <!-- OFFSETS -->
+          <ion-col size="1" *ngFor="let item of offset;" class="cell-style offset-cell-style ion-no-padding">
+            <ion-item lines="none" detail="false" color="default">
+            </ion-item>
+          </ion-col>
+         
+
+
+          <!-- CALENDAR DAYS -->
+          <ion-col size="1" *ngFor="let item of items;" class="cell-style ion-no-padding"
+            [class.active-day]="(item.date | date: 'M d yyyy') == (currentDate | date: 'M d yyyy')">
+
+            <!-- 3 TYPES OF CALENDAR BUTTON BASED ON ICON -->
+            <ion-item button lines="none" color="success" *ngIf="item.savings > 0"
+              (click)="presentDayDataModal(item.key, item.date)" class="ion-text-center" detail="false">
+
+              <ion-label class="ion-text-wrap">
+                {{ item.date | date : 'dd' }}
+
+                <ion-icon name="trending-up-outline"></ion-icon>
+              </ion-label>
+
+            </ion-item>
+
+            <ion-item button lines="none" color="danger" *ngIf="item.savings < 0"
+              (click)="presentDayDataModal(item.key, item.date)" class="ion-text-center" detail="false">
+
+              <ion-label class="ion-text-wrap">
+                {{ item.date | date : 'dd' }}
+
+                <ion-icon name="trending-down-outline"></ion-icon>
+              </ion-label>
+
+            </ion-item>
+
+            <ion-item button lines="none" color="default" *ngIf="item.savings == 0"
+              (click)="presentDayDataModal(item.key, item.date)" class="ion-text-center" detail="false">
+
+              <ion-label class="ion-text-wrap">
+                {{ item.date | date : 'dd' }}
+
+                <ion-icon name="swap-vertical-outline"></ion-icon>
+              </ion-label>
+            </ion-item>
+
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+
+    </div>
+
+    <!-- DETAIL CARDS -->
+    <ion-grid>
+
+      <ion-row>
+        <ion-col size="12">
+
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-text color="primary">Savings</ion-text>
+              </ion-card-title>
+
+              <ion-card-subtitle *ngIf="txtTotalSavings > 0">
+                Great job! You saved some extra cash.
+              </ion-card-subtitle>
+
+              <ion-card-subtitle *ngIf="txtTotalSavings <= 0">
+                You can do better next time!
+              </ion-card-subtitle>
+
+            </ion-card-header>
+
+            <ion-card-content>
+
+              <!-- TOTAL SAVINGS -->
+              <ion-item lines="none">
+                <ion-label>
+                  Total Savings:
+                </ion-label>
+
+                <ion-text text-right *ngIf="txtTotalSavings > 0" color="success">
+                  +{{ txtTotalSavings }} PHP
+                </ion-text>
+
+                <ion-text text-right *ngIf="txtTotalSavings <= 0" color="danger">
+                  {{ txtTotalSavings }} PHP
+                </ion-text>
+
+              </ion-item>
+
+              <!-- SAVED MOST ON -->
+              <ion-item [attr.button]="getHighestSavingsDate() != null" (click)="searchItem(getHighestSavingsDate())"
+                lines="none">
+                <ion-label text-wrap>
+                  Saved the most on:
+                </ion-label>
+
+                <ng-container *ngIf="getHighestSavingsDate() != null">
+                  <ion-text text-right color="success">
+                    {{ getHighestSavingsDate() | date : 'MMMM dd' }}
+                  </ion-text>
+
+                  <ion-icon name="chevron-forward-outline" class="ion-padding-left" color="dark"></ion-icon>
+                </ng-container>
+
+                <ion-text text-right *ngIf="getHighestSavingsDate() == null">
+                  N/A
+                </ion-text>
+              </ion-item>
+
+
+              <!-- SPEND MOST ON -->
+              <ion-item [attr.button]="getHighestExpenseDate() != null" (click)="searchItem(getHighestExpenseDate())"
+                lines="none">
+                <ion-label>
+                  Spent the most on:
+                </ion-label>
+
+                <ng-container *ngIf="getHighestExpenseDate() != null">
+                  <ion-text text-right color="danger">
+                    {{ getHighestExpenseDate() | date : 'MMMM dd' }}
+                  </ion-text>
+
+                  <ion-icon name="chevron-forward-outline" class="ion-padding-left" color="dark"></ion-icon>
+
+                </ng-container>
+
+
+                <ion-text text-right *ngIf="getHighestExpenseDate() == null">
+                  N/A
+                </ion-text>
+
+              </ion-item>
+
+
+            </ion-card-content>
+          </ion-card>
+
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+
+        <ion-col size-md="6" size="12">
+
+          <!-- SUMMARY ALLOWANCES -->
+          <ion-card button (click)="showSummaryAllowance()">
+            <ion-card-header>
+              <ion-card-title color="success">
+                Allowances
+              </ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+
+
+              <!-- TOTAL INCOME -->
+              <ion-item lines="none">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size-sm="6" size="12">Total Income:</ion-col>
+                    <ion-col size-sm="6" size="12" class="ion-text-right">{{ getTotalAllowance() }} PHP</ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+
+              <!-- HIGHEST INCOME -->
+              <ion-item lines="none">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size-sm="6" size="12">Highest Income:</ion-col>
+                    <ion-col size-sm="6" size="12" class="ion-text-right">
+                      <ng-container *ngIf="topAllowances[0] != null">
+                        {{ topAllowances[0]?.amount }} PHP ({{ topAllowances[0]?.name }})
+                      </ng-container>
+                      <ng-container *ngIf="topAllowances[0] == null">
+                        N/A
+                      </ng-container>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+
+              <div>
+                <ion-text color="medium" class="ion-float-right ion-padding">
+                  Show more...
+                </ion-text>
+              </div>
+
+            </ion-card-content>
+          </ion-card>
+
+        </ion-col>
+
+
+
+        <ion-col size-md="6" size="12">
+
+          <!-- SUMMARY EXPENSES -->
+          <ion-card button (click)="showSummaryExpense()">
+            <ion-card-header>
+              <ion-card-title color="danger">
+                Expenses
+              </ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+
+              <!-- TOTAL EXPENSE -->
+              <ion-item lines="none">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size-sm="6" size="12">Total Expense:</ion-col>
+                    <ion-col size-sm="6" size="12" class="ion-text-right">{{ getTotalExpenses() }} PHP</ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+
+              <!-- HIGHEST EXPENSE -->
+              <ion-item lines="none">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size-sm="6" size="12">Highest Expense:</ion-col>
+                    <ion-col size-sm="6" size="12" class="ion-text-right">
+                      <ng-container *ngIf="topExpenses[0] != null">
+                        {{ topExpenses[0]?.amount }} PHP ({{ topExpenses[0]?.name }})
+                      </ng-container>
+                      <ng-container *ngIf="topExpenses[0] == null">
+                        N/A
+                      </ng-container>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+
+
+              <div>
+                <ion-text color="medium" class="ion-float-right ion-padding">
+                  Show more...
+                </ion-text>
+              </div>
+
+            </ion-card-content>
+          </ion-card>
+
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+
+  </div>
+
+
+
+
+</ion-content>

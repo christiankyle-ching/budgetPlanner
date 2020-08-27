@@ -1,0 +1,87 @@
+<ion-split-pane contentId="main">
+
+  <ion-menu contentId="main">
+
+    <ion-header>
+
+    </ion-header>
+
+    <ion-content>
+
+      <div class="header">
+
+        <ion-grid class="ion-padding">
+
+
+          <ion-row class="ion-align-items-center">
+
+            <ion-col size="4" class="ion-padding">
+              <ion-img src="..\..\..\assets\img\icon.png"></ion-img>
+            </ion-col>
+
+            <ion-col size="8" class="ion-padding-right">
+              <h3>Budget Planner</h3>
+              <small>A simple budget planner for students.</small>
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+
+      </div>
+
+      <ion-menu-toggle auto-hide="false">
+
+        <div *ngFor="let p of pages">
+
+          <!-- IF NO CHILDREN -->
+          <ion-item *ngIf="!p.children" [routerLink]="p.url" lines="none" routerDirection="root"
+            routerLinkActive="active">
+            <ion-icon [name]="p.icon" slot="start"></ion-icon>
+            <ion-label>{{ p.title }}</ion-label>
+          </ion-item>
+
+
+          <!-- ELSE IF HAS CHILDREN -->
+          <ion-list *ngIf="p.children">
+
+            <ion-list-header>
+              {{ p.header }}
+            </ion-list-header>
+
+            <ion-item *ngFor="let sub of p.children" lines="none" [routerLink]="sub.url" routerDirection="root"
+              routerLinkActive="active">
+              <ion-icon [name]="sub.icon" slot="start"></ion-icon>
+              <ion-label>{{ sub.title }}</ion-label>
+            </ion-item>
+
+          </ion-list>
+
+        </div>
+
+
+      </ion-menu-toggle>
+
+      <ion-item lines="none">
+        <ion-label>Dark Mode</ion-label>
+        <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()" color="secondary"></ion-toggle>
+      </ion-item>
+
+
+    </ion-content>
+
+    <ion-footer>
+
+      <div>
+        <ion-button fill="clear" (click)="exitApp()" class="ion-float-right">
+          Exit
+          <ion-icon name="power" slot="end"></ion-icon>
+        </ion-button>
+      </div>
+
+    </ion-footer>
+
+  </ion-menu>
+
+  <ion-router-outlet id="main"></ion-router-outlet>
+</ion-split-pane>

@@ -1,0 +1,318 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+
+    <ion-title>Budget This Day</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="presentMenu($event)">
+        <ion-icon name="ellipsis-vertical" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+
+</ion-header>
+
+<ion-content>
+
+  <ion-grid class="ion-no-padding ion-padding-horizontal">
+
+    <!-- HEADER -->
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+
+        <ion-grid>
+          <ion-row>
+
+            <ion-col size="4">
+
+              <span class="ion-text-uppercase">
+                <strong style="font-size: 1.2em;">{{ currentDate | date: 'E' }} </strong>
+              </span>
+
+              <div class="ion-text-uppercase">
+                <small>
+                  {{ currentDate | date: 'MMMM dd, yyyy' }}
+                </small>
+              </div>
+
+            </ion-col>
+
+            <ion-col></ion-col>
+
+            <ion-col size="5">
+
+              <div style="float: right;">
+                <small>Remaining Balance ({{ currentDate | date: 'MMMM' }}):</small>
+              </div>
+              <div style="float: right;">
+                <strong style="font-size: 1.2em;"> {{ remainingBalance | number : '0.2-2' }} PHP</strong>
+              </div>
+
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+
+      </ion-col>
+    </ion-row>
+
+
+
+
+    <ion-row>
+      <!-- NOTES -->
+      <ion-col size-md="6" offset-md="3">
+
+        <ion-card>
+
+
+          <ion-card-content>
+
+            <ion-grid>
+              <ion-card-title>Notes</ion-card-title>
+            </ion-grid>
+
+
+            <ion-textarea placeholder="What's up for today?" enterkeyhint="done"
+            inputmode="text" [(ngModel)]="txtNote" (ionChange)="updateNote()" debounce="500">
+            </ion-textarea>
+
+          </ion-card-content>
+
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+
+
+
+
+
+    <ion-row>
+      <!-- ALLOWANCE -->
+      <ion-col size-md="6" offset-md="3">
+
+        <ion-card>
+
+          <ion-card-header>
+
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <ion-col>
+                  <ion-card-title color="success">Allowance</ion-card-title>
+                </ion-col>
+                <ion-col size="auto" class="ion-text-right">
+                  <ion-button fill="clear" (click)="addAllowance()">
+                    <ion-icon name="add-outline" size="large"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+          </ion-card-header>
+
+          <ion-card-content>
+
+            <ion-list>
+
+              <ion-item-sliding *ngFor="let a of allowances" #sliding>
+
+                <ion-item>
+
+                  <ion-label>
+                    <!-- DETAILS -->
+                    <ion-text>{{ a.name }}</ion-text>
+
+                    <ion-text class="ion-float-right">{{ a.amount | number : '0.2-2' }} PHP</ion-text>
+                  </ion-label>
+
+                </ion-item>
+
+                <ion-item-options side="end">
+                  <ion-item-option (click)="confirmRemoveAllowance(a); sliding.close()" color="danger">
+                    <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+                  </ion-item-option>
+                </ion-item-options>
+
+              </ion-item-sliding>
+
+            </ion-list>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+
+
+
+
+    <ion-row>
+      <!-- EXPENSES -->
+      <ion-col size-md="6" offset-md="3">
+
+        <ion-card>
+
+          <ion-card-header>
+
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <ion-col>
+                  <ion-card-title color="danger">Expenses</ion-card-title>
+                </ion-col>
+                <ion-col size="auto">
+                  <ion-button (click)="addExpense()" fill="clear">
+                    <ion-icon name="add-outline" size="large"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+          </ion-card-header>
+
+          <ion-card-content>
+
+            <ion-list>
+
+              <ion-item-sliding *ngFor="let ex of expenses" #sliding>
+
+                <ion-item>
+
+                  <ion-label>
+                    <!-- DETAILS -->
+                    <ion-text>{{ ex.name }}</ion-text>
+
+                    <ion-text class="ion-float-right">{{ ex.amount | number : '0.2-2' }} PHP</ion-text>
+                  </ion-label>
+
+                </ion-item>
+
+                <ion-item-options side="end">
+                  <ion-item-option (click)="confirmRemoveExpense(ex); sliding.close()" color="danger">
+                    <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+                  </ion-item-option>
+                </ion-item-options>
+
+              </ion-item-sliding>
+
+
+            </ion-list>
+
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+
+
+
+
+    <ion-row>
+      <!-- SUMMARY -->
+      <ion-col size-md="6" offset-md="3">
+
+        <ion-card>
+          <ion-card-header ion-padding>
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <ion-col>
+                  <ion-card-title>Summary</ion-card-title>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+          </ion-card-header>
+
+          <ion-card-content>
+
+            <!-- TOTAL ALLOWANCES -->
+            <ion-item lines="none">
+              <ion-grid>
+                <ion-row class="ion-align-items-center">
+
+                  <ion-col size="auto" class="ion-padding-horizontal">
+                    <ion-icon name="wallet-outline"></ion-icon>
+                  </ion-col>
+
+                  <ion-col>Total Allowance:</ion-col>
+
+                  <ion-col class="ion-text-right">{{txtTotalAllowances | number : '0.2-2'}} PHP</ion-col>
+                </ion-row>
+
+              </ion-grid>
+            </ion-item>
+
+            <!-- TOTAL EXPENSES -->
+            <ion-item lines="none">
+              <ion-grid>
+                <ion-row class="ion-align-items-center">
+
+                  <ion-col size="auto" class="ion-padding-horizontal">
+                    <ion-icon name="pricetags-outline"></ion-icon>
+                  </ion-col>
+
+                  <ion-col>Total Expenses:</ion-col>
+
+                  <ion-col class="ion-text-right">{{txtTotalExpenses | number : '0.2-2'}} PHP</ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+
+            <!-- TOTAL SAVINGS -->
+            <ion-item lines="none">
+              <ion-grid>
+                <ion-row class="ion-align-items-center">
+                  <ion-col size="auto" class="ion-padding-horizontal">
+                    <ion-icon name="cash-outline"></ion-icon>
+                  </ion-col>
+
+                  <ion-col>Total Savings:</ion-col>
+
+                  <ion-col class="ion-text-right">
+
+
+                    <ion-text color="success" *ngIf="(txtTotalSavings > 0)">
+                      +{{txtTotalSavings | number : '0.2-2'}} PHP
+                    </ion-text>
+
+                    <ion-text color="danger" *ngIf="(txtTotalSavings <= 0)">
+                      {{txtTotalSavings | number : '0.2-2'}} PHP
+                    </ion-text>
+                  </ion-col>
+
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+
+
+
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+        <!-- <ion-button (click)="refresh()">REFRESH</ion-button> -->
+      </ion-col>
+    </ion-row>
+
+
+
+
+  </ion-grid>
+
+
+  <!-- <button (click)="refresh()">refresh</button>
+  <button (click)="log()">log</button> -->
+
+
+</ion-content>

@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add New Allowance</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <form (ngSubmit)="submit()" [formGroup]="addAllowanceForm">
+    <ion-list>
+
+      <!-- NAME -->
+      <ion-item>
+        <ion-label position="floating">Source of Income</ion-label>
+        <ion-input type="text" formControlName="name" autocapitalize="words"></ion-input>
+      </ion-item>
+
+      <div *ngFor="let error of errorMessages.name">
+        <div *ngIf="(name.hasError(error.type)) && (name.dirty || name.touched)">
+          <ion-text color="danger" class="error ion-padding">{{ error.message }}</ion-text>
+        </div>
+      </div>
+
+      <!-- AMOUNT -->
+      <ion-item>
+        <ion-label position="floating">Amount</ion-label>
+        <ion-input type="number" formControlName="amount"></ion-input>
+      </ion-item>
+      
+      <div *ngFor="let error of errorMessages.amount">
+        <div *ngIf="(amount.hasError(error.type)) && (amount.dirty || amount.touched)">
+          <ion-text color="danger" class="error ion-padding">{{ error.message }}</ion-text>
+        </div>
+      </div>
+
+    </ion-list>
+
+    <ion-button type="submit" expand="block" [disabled]="!addAllowanceForm.valid">Add Allowance</ion-button>    
+
+  </form>
+
+</ion-content>

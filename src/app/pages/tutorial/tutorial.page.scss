@@ -1,0 +1,23 @@
+ion-slides {
+  height: 100%;
+}
+
+.text {
+  background-color: green;
+  z-index: 1;
+}
+
+.wrapper {
+  height: 30vh;
+  text-align: center;
+  overflow: hidden;
+}
+
+.image {
+  display: inline-block;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  position: relative;
+  top: 100%;
+}
