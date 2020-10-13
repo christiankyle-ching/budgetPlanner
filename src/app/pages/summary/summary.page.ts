@@ -5,7 +5,8 @@ import { ModalController, LoadingController } from '@ionic/angular';
 import { SummaryDayPage } from './summary-day/summary-day.page';
 
 import * as _ from 'lodash';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router } from '@angular/router';
+import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 
 @Component({
   selector: 'app-summary',
@@ -47,11 +48,12 @@ export class SummaryPage implements OnInit {
     private dataService: DataService,
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
-    private router: Router
+    private router: Router,
+    private googleAnalytics: GoogleAnalytics,
   ) { }
 
   ngOnInit() {
-    // this.loadData(); //TEMP
+    this.googleAnalytics.trackView('Summary Home')
     this.currentDate = new Date().toISOString();
   }
 

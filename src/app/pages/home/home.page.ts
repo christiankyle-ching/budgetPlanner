@@ -55,7 +55,6 @@ export class HomePage implements OnInit {
     private plt: Platform,
     private themeService: ThemeService,
     private dataService: DataService,
-    private navCtrl: NavController
   ) {
     this.router.events.subscribe((event: RouterEvent) => {
       this.selectedPath = event.url;

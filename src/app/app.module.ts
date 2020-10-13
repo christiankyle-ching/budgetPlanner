@@ -26,6 +26,7 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx'
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { Chooser } from '@ionic-native/chooser/ngx';
+import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 
 
 //MODALS
@@ -66,7 +67,8 @@ export const popoverMenus = [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    File, FileChooser, FileOpener, FilePath, Chooser
+    File, FileChooser, FileOpener, FilePath, Chooser,
+    GoogleAnalytics,  
   ],
 
   bootstrap: [AppComponent]

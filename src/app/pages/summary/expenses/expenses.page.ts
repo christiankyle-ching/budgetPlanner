@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { setColors } from 'src/app/models/global';
 import * as Chart from 'chart.js';
+import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 
 @Component({
   selector: 'app-expenses',
@@ -16,10 +17,12 @@ export class ExpensesPage implements OnInit {
   pieChart: Chart;
 
   constructor(
-    private dataService: DataService
+    private dataService: DataService,
+    private googleAnalytics: GoogleAnalytics,
   ) { }
 
   ngOnInit() {
+    this.googleAnalytics.trackView('Summary - Expenses')
     this.dataService.getTempItem('topExpenses').then(res => {
       this.topExpenses = res;
     }).then(() => {

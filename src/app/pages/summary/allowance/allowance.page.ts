@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import * as Chart from 'chart.js';
 import { setColors } from 'src/app/models/global';
+import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 
 
 @Component({
@@ -18,12 +19,15 @@ export class AllowancePage implements OnInit {
   showChart = false;
 
   constructor(
-    private dataService: DataService
+    private dataService: DataService,
+    private googleAnalytics: GoogleAnalytics,
   ) {
 
   }
 
   ngOnInit() {
+    this.googleAnalytics.trackView('Summary - Allowance')
+    
     this.dataService.getTempItem('topAllowances').then(res => {
       this.topAllowances = res;
     }).then(() => {

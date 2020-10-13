@@ -7,6 +7,7 @@ import { DataService } from '../../../services/data.service';
 import { AddAllowancePage } from '../add-allowance/add-allowance.page';
 import { BudgetTodayMenuComponent } from '../budget-today-menu/budget-today-menu.component';
 import { Router } from '@angular/router';
+import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 
 @Component({
   selector: 'app-budget-today',
@@ -31,14 +32,15 @@ export class BudgetTodayPage implements OnInit {
     private popoverCtrl: PopoverController,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController,
-    private plt: Platform,
-    private router: Router
+    private googleAnalytics: GoogleAnalytics,
   ) {
 
   }
 
   ngOnInit() {
     this.initApp();
+
+    this.googleAnalytics.trackView('Home')
   }
 
   initApp() {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { NavParams, ModalController } from '@ionic/angular';
+import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 
 @Component({
   selector: 'app-summary-day',
@@ -23,12 +24,15 @@ export class SummaryDayPage implements OnInit {
   constructor(
     private dataService: DataService,
     private navParams: NavParams,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private googleAnalytics: GoogleAnalytics,
   ) {
 
   }
 
   ngOnInit() {
+    this.googleAnalytics.trackView('Summary - Specific Day')
+
     this.key = this.navParams.get('key');
     this.date = this.navParams.get('date');
 

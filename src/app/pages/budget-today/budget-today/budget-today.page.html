@@ -25,40 +25,18 @@
     <!-- HEADER -->
     <ion-row>
       <ion-col size-md="6" offset-md="3">
-
-        <ion-grid>
-          <ion-row>
-
-            <ion-col size="4">
-
-              <span class="ion-text-uppercase">
-                <strong style="font-size: 1.2em;">{{ currentDate | date: 'E' }} </strong>
-              </span>
-
-              <div class="ion-text-uppercase">
-                <small>
-                  {{ currentDate | date: 'MMMM dd, yyyy' }}
-                </small>
-              </div>
-
-            </ion-col>
-
-            <ion-col></ion-col>
-
-            <ion-col size="5">
-
-              <div style="float: right;">
-                <small>Remaining Balance ({{ currentDate | date: 'MMMM' }}):</small>
-              </div>
-              <div style="float: right;">
-                <strong style="font-size: 1.2em;"> {{ remainingBalance | number : '0.2-2' }} PHP</strong>
-              </div>
-
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-
-
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              {{ currentDate | date: 'E' }} <span> | </span>
+              <small>{{ currentDate | date: 'MMMM dd, yyyy' }}</small>
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <strong>{{ remainingBalance | number : '0.2-2' }} PHP</strong>
+            <span> | Remaining Balance for {{ currentDate | date: 'MMMM' }}</span>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
 
@@ -79,8 +57,8 @@
             </ion-grid>
 
 
-            <ion-textarea placeholder="What's up for today?" enterkeyhint="done"
-            inputmode="text" [(ngModel)]="txtNote" (ionChange)="updateNote()" debounce="500">
+            <ion-textarea placeholder="What's up for today?" enterkeyhint="done" inputmode="text" [(ngModel)]="txtNote"
+              (ionChange)="updateNote()" debounce="500">
             </ion-textarea>
 
           </ion-card-content>

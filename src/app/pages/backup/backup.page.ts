@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 import { BackupService } from 'src/app/services/backup.service';
 
 
@@ -14,12 +15,12 @@ export class BackupPage implements OnInit {
 
   constructor(
     private backupService: BackupService,
+    private googleAnalytics: GoogleAnalytics
   ) { }
 
   ngOnInit() {
-
+    this.googleAnalytics.trackView('Backup & Restore')
   }
-
 
   doBackup() {
     this.backupService.alertConfirmBackup();

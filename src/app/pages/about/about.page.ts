@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 import * as Global from 'src/app/models/global';
 
 @Component({
@@ -10,10 +11,12 @@ export class AboutPage implements OnInit {
 
   global = Global;
   
-  constructor() { }
+  constructor(
+    private googleAnalytics: GoogleAnalytics
+  ) { }
 
   ngOnInit() {
-    
+    this.googleAnalytics.trackView('About')
   }
 
 }
