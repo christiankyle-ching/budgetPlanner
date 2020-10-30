@@ -65,7 +65,7 @@ export class HelpPage implements OnInit {
 
     let desc = this.txtDescription.trim();
 
-    this.hrefMail = `mailto:nobs@gmail.com?subject=${subject}&body=${desc}`;
+    this.hrefMail = `mailto:ckching.dev@gmail.com?subject=${subject}&body=${desc}`;
     this.hrefMail = this.hrefMail.split(' ').join('%20');
   }
 
